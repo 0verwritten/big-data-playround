@@ -7,22 +7,22 @@ class Cleaning(BaseClass):
         self.logger.info("Очищення даних поїздок...")
 
         cleaned_df = trip_df.filter(
-            (col("pickup_datetime").isNotNull())
+            (col(" pickup_datetime").isNotNull())
         )
 
         cleaned_df = cleaned_df.filter(
-            (col("passenger_count") >= 1)
+            (col(" passenger_count") >= 1)
         )
 
         cleaned_df = cleaned_df.filter(
-            (col("trip_distance") > 0)
+            (col(" trip_distance") > 0)
         )
 
         cleaned_df = cleaned_df.filter(
-            (col("pickup_longitude") != 0) &
-            (col("pickup_latitude") != 0) &
-            (col("dropoff_longitude") != 0) &
-            (col("dropoff_latitude") != 0)
+            (col(" pickup_longitude") != 0) &
+            (col(" pickup_latitude") != 0) &
+            (col(" dropoff_longitude") != 0) &
+            (col(" dropoff_latitude") != 0)
         )
 
         original_count = trip_df.count()

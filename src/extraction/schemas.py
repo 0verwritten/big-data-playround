@@ -1,7 +1,7 @@
 from pyspark.sql.types import StructType, StructField, StringType, IntegerType, DoubleType, TimestampType
 
 class Schemas:
-    @getattr
+    @property
     def trip_data_schema():
         """
         Схема для файлів trip_data.csv
