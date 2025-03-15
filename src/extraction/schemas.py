@@ -38,3 +38,35 @@ class Schemas:
             StructField("dropoff_longitude", DoubleType(), True),
             StructField("dropoff_latitude", DoubleType(), True)
         ])
+
+    @property
+    def fare_data_schema():
+        """
+        Схема для файлів fare_data.csv
+
+        Містить інформацію про оплату:
+        - medallion: ідентифікатор автомобіля
+        - hack_license: ідентифікатор ліцензії водія
+        - vendor_id: ідентифікатор постачальника
+        - pickup_datetime: дата і час початку поїздки
+        - payment_type: тип оплати
+        - fare_amount: вартість поїздки
+        - surcharge: додаткова плата
+        - mta_tax: податок MTA
+        - tip_amount: чайові
+        - tolls_amount: плата за проїзд по платним дорогам
+        - total_amount: загальна сума
+        """
+        return StructType([
+            StructField("medallion", StringType(), False),
+            StructField("hack_license", StringType(), False),
+            StructField("vendor_id", StringType(), False),
+            StructField("pickup_datetime", TimestampType(), False),
+            StructField("payment_type", StringType(), True),
+            StructField("fare_amount", DoubleType(), True),
+            StructField("surcharge", DoubleType(), True),
+            StructField("mta_tax", DoubleType(), True),
+            StructField("tip_amount", DoubleType(), True),
+            StructField("tolls_amount", DoubleType(), True),
+            StructField("total_amount", DoubleType(), True)
+        ])
