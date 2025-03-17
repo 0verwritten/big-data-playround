@@ -32,3 +32,23 @@ class Cleaning(BaseClass):
         self.logger.info(f"Видалено {removed_count} записів ({removed_count/original_count*100:.2f}%) з даних поїздок")
 
         return cleaned_df
+
+
+    def clean_fare_data(self, fare_df: DataFrame) -> DataFrame:
+        self.logger.info("Очищення даних оплати...")
+
+        cleaned_df = cleaned_df.filter(
+            (col("fare_amount") >= 0)
+        )
+
+        cleaned_df = cleaned_df.filter(
+            (col("total_amount") >= 0)
+        )
+
+        original_count = fare_df.count()
+        cleaned_count = cleaned_df.count()
+        removed_count = original_count - cleaned_count
+
+        self.logger.info(f"Видалено {removed_count} записів ({removed_count/original_count*100:.2f}%) з даних оплати")
+
+        return cleaned_df
