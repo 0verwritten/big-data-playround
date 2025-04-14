@@ -13,3 +13,6 @@ if __name__ == '__main__':
 
     for key, value in stats.items():
         print(key, value)
+
+    c.write_results_to_csv(stats, "stats")
+    # c.write_results_to_csv(, 'results')
