@@ -58,11 +58,11 @@ class Cleaning(BaseClass):
         )
 
         cleaned_df = fare_df.filter(
-            (col("fare_amount") >= 0)
+            (col("fare_amount") >= 2.5)
         )
 
         cleaned_df = cleaned_df.filter(
-            (col("total_amount") >= 0)
+            (col("total_amount") >= 2.5)
         )
 
         cleaned_df = cleaned_df.withColumn(

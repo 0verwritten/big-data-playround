@@ -93,4 +93,7 @@ class Loaders(Schemas, Cleaning):
         self.logger.info(f"Записів про поїхдки {trip_count}, записів про комісію {fare_count}, з'єднані дані {joined_count} ({joined_count/trip_count * 100}, {joined_count/fare_count * 100})")
 
     def load_final_data(self):
-        return self.spark.read.parquet(self.__merged_data_path)
+        df = self.spark.read.parquet(self.__merged_data_path)
+        df = self.clean_fare_data(df)
+        df = self.clean_trip_data(df)
+        return df
