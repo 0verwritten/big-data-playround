@@ -2,7 +2,7 @@ from pyspark.sql.types import StructType, StructField, StringType, IntegerType, 
 
 class Schemas:
     @property
-    def trip_data_schema():
+    def trip_data_schema(self):
         """
         Схема для файлів trip_data.csv
 
@@ -40,7 +40,7 @@ class Schemas:
         ])
 
     @property
-    def fare_data_schema():
+    def fare_data_schema(self):
         """
         Схема для файлів fare_data.csv
 
@@ -70,3 +70,7 @@ class Schemas:
             StructField("tolls_amount", DoubleType(), True),
             StructField("total_amount", DoubleType(), True)
         ])
+    
+    @property
+    def merged_data_schema(self):
+        pass
