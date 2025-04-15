@@ -1,9 +1,11 @@
-from ..base import BaseClass
-from . import Filters, Grouping, Joins, Windows
+from .filters import Filters
+from .grouping import Grouping
+from .joins import Joins
+from .windows import Windows
 
 from pyspark.sql import DataFrame
 
-class Processor(BaseClass, Filters, Grouping, Joins, Windows):
+class Processor(Filters, Grouping, Joins, Windows):
     def process_all_business_questions(self, df: DataFrame) -> dict:
         self.logger.info("Початок обробки бізнес-питань...")
 

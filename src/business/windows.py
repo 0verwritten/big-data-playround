@@ -1,6 +1,6 @@
 from ..base import BaseClass
 from pyspark.sql import DataFrame
-from pyspark.sql.functions import col, desc, rank, hour, dayofweek, date_format, to_date, when, avg, expr, count, dense_rank, year, month, dayofmonth
+from pyspark.sql.functions import col, desc, rank, hour, dayofweek, date_format, to_date, when, avg, expr, count, dense_rank, year, month, dayofmonth, round
 from pyspark.sql.window import Window
 
 class Windows(BaseClass):

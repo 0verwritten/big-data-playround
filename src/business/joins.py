@@ -1,6 +1,6 @@
 from ..base import BaseClass
 from pyspark.sql import DataFrame
-from pyspark.sql.functions import col, desc, hour, dayofweek, date_format, to_date, when, avg, expr, count
+from pyspark.sql.functions import col, desc, hour, dayofweek, date_format, to_date, when, avg, expr, count, round, sum
 
 class Joins(BaseClass):
 
