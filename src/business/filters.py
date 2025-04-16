@@ -122,33 +122,35 @@ class Filters(BaseClass):
         
         return result
 
-    def get_short_trips(self, df: DataFrame) -> DataFrame:
+    def get_short_trips(self, df: DataFrame, limit: int = 100) -> DataFrame:
         """
         Бізнес-питання N: Які характеристики мають короткі поїздки (менше 1 милі)?
         """
         self.logger.info("Виконання бізнес-питання: Короткі поїздки")
-        
-        result = df.select(
-            "medallion", 
-            "hack_license", 
-            "pickup_datetime", 
+        filtered_df = df.filter(
+            (col("trip_distance") > 0.1) & (col("trip_distance") < 1) & (col("trip_time_in_secs") > 60)
+        )
+
+        result = filtered_df.select(
+            "medallion",
+            "hack_license",
+            "pickup_datetime",
             "trip_distance",
             "trip_time_in_secs",
-            "passenger_count", 
+            "passenger_count",
             "fare_amount",
             "tip_amount",
             "total_amount"
-        ).filter(
-            (col("trip_distance") > 0) & (col("trip_distance") < 1)
         ).withColumn(
-            "cost_per_mile", col("fare_amount") / col("trip_distance")
+            "cost_per_minute", when(col("trip_time_in_secs") > 0, col("fare_amount") / (col("trip_time_in_secs") * 60)).otherwise(None)
         ).withColumn(
-            "avg_speed_mph", (col("trip_distance") / col("trip_time_in_secs")) * 3600
+            "avg_speed_mph", when(col("trip_time_in_secs") > 0, (col("trip_distance") / col("trip_time_in_secs")) * 3600).otherwise(None)
         ).orderBy(
-            desc("cost_per_mile")
-        )
-        
+            desc("cost_per_minute")
+        ).limit(limit)
+
         return result
+
     
     
     def get_high_tip_trips(self, df: DataFrame) -> DataFrame:
