@@ -3,7 +3,7 @@ from pyspark.sql import DataFrame
 from pyspark.sql.functions import col, desc, hour, dayofweek, date_format, to_date, when, avg, expr
 
 class Filters(BaseClass):
-    def get_longest_trips(self, df: DataFrame, limit: int = 100) -> DataFrame:
+    def get_longest_trips(self, df: DataFrame, limit: int = 1000) -> DataFrame:
         """
         Бізнес-питання Vl: Які поїздки були найдовшими за відстанню?
         """
@@ -15,8 +15,11 @@ class Filters(BaseClass):
             "pickup_datetime", 
             "dropoff_datetime", 
             "trip_distance",
+            'trip_time_in_secs',
             "passenger_count", 
-            "total_amount"
+            "total_amount",
+            "fare_amount",  
+            "tip_amount",
         ).filter(
             col("trip_distance") > 0
         ).orderBy(
@@ -25,7 +28,7 @@ class Filters(BaseClass):
         
         return result
 
-    def get_most_expensive_trips(self, df: DataFrame, limit: int = 100) -> DataFrame:
+    def get_most_expensive_trips(self, df: DataFrame, limit: int = 1000) -> DataFrame:
         """
         Бізнес-питання Vl: Які поїздки були найдорожчими?
         """
@@ -39,6 +42,7 @@ class Filters(BaseClass):
             "trip_distance",
             "passenger_count", 
             "fare_amount",
+            'trip_time_in_secs',
             "tip_amount",
             "total_amount"
         ).filter(
@@ -57,20 +61,17 @@ class Filters(BaseClass):
         self.logger.info("Виконання бізнес-питання: Поїздки в нічний час")
         
         result = df.select(
-            "medallion", 
-            "hack_license", 
-            "pickup_datetime", 
-            "dropoff_datetime", 
+            "pickup_datetime",
             "trip_distance",
-            "passenger_count", 
-            "fare_amount",
-            "total_amount",
-            hour("pickup_datetime").alias("hour_of_day")
+            "total_amount"
         ).filter(
             (hour("pickup_datetime") >= 0) & (hour("pickup_datetime") < 5)
         ).groupBy(
             hour("pickup_datetime").alias("hour")
-        ).count().orderBy("hour")
+        ).agg(
+            avg("total_amount").alias("avg_total_amount"),
+            avg("trip_distance").alias("avg_trip_distance")
+        ).orderBy("hour")
         
         return result
     
